@@ -1,4 +1,5 @@
 if status is-interactive
+
     if not set -q TMUX
         # Установка зависимостей
         if not type -q fzf
@@ -63,9 +64,10 @@ set -g mouse on
             end
             
             # Показываем шпаргалку после запуска
-            show_tmux_cheatsheet
+            # show_tmux_cheatsheet
         end
     end
+show_tmux_cheatsheet
 end
 
 # Команда для переустановки
