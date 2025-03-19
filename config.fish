@@ -12,28 +12,29 @@ if status is-interactive
             sudo apt-get install -y tmux 2>/dev/null || brew install tmux 2>/dev/null
         end
 
-        # Настройки tmux
+        # Настройки tmux (исправляем артефакты)
         set -l TMUX_CONF $HOME/.tmux.conf
         echo "
 # Базовые настройки
 set -g prefix C-b
 set -g detach-on-destroy off
-set -g default-terminal 'screen-256color'
+set -g default-terminal 'xterm-256color'
+set -g -as terminal-overrides ',xterm*:Tc:sitm@'
+set -g focus-events on
 set -g mouse on
 " > $TMUX_CONF
 
         # Функция для показа шпаргалки
         function show_tmux_cheatsheet
             echo
-            echo "▓▓▓ TMUX Шпаргалка ▓▓▓"
-            echo "Основные команды:"
-            echo "Ctrl+B c → Новое окно"
-            echo "Ctrl+B % → Вертикальное разделение"
-            echo "Ctrl+B \" → Горизонтальное разделение"
+            echo "=== TMUX Шпаргалка ==="
+            echo "Ctrl+B c    → Новое окно"
+            echo "Ctrl+B %    → Вертикальное разделение"
+            echo "Ctrl+B \"    → Горизонтальное разделение"
             echo "Ctrl+B ←↑→↓ → Навигация между панелями"
-            echo "Ctrl+B d → Отсоединиться от сессии"
-            echo "Ctrl+B s → Показать список сессий"
-            echo "Ctrl+B [ → Режим прокрутки (выход - Q)"
+            echo "Ctrl+B d    → Отсоединиться"
+            echo "Ctrl+B s    → Список сессий"
+            echo "Ctrl+B [    → Режим прокрутки (выход - Q)"
             echo
         end
 
@@ -48,30 +49,29 @@ set -g mouse on
                     set -l selected_session (tmux list-sessions -F "#S" | fzf --height 40% --reverse)
                     if test -n "$selected_session"
                         tmux attach -t "$selected_session"
-                        show_tmux_cheatsheet
                     else
                         read -P "Введите имя новой сессии: " -l new_session
                         tmux new -s "$new_session"
-                        show_tmux_cheatsheet
                     end
                 else
                     read -P "Введите имя новой сессии: " -l new_session
                     tmux new -s "$new_session"
-                    show_tmux_cheatsheet
                 end
             else
                 read -P "Введите имя для новой сессии: " -l session_name
                 tmux new -s "$session_name"
-                show_tmux_cheatsheet
             end
+            
+            # Показываем шпаргалку после запуска
+            show_tmux_cheatsheet
         end
     end
 end
 
-# Команда для переустановки конфига
+# Команда для переустановки
 function reinstall_tmux_config
     rm -f ~/.config/fish/config.fish
-    curl -sL https://raw.githubusercontent.com/yourusername/yourrepo/main/config.fish > ~/.config/fish/config.fish
+    curl -sL https://example.com/your-config.fish > ~/.config/fish/config.fish
     source ~/.config/fish/config.fish
-    echo "Конфиг успешно обновлён!"
+    echo "Конфиг обновлён!"
 end
