@@ -71,7 +71,7 @@ end
 # Команда для переустановки
 function reinstall_tmux_config
     rm -f ~/.config/fish/config.fish
-    curl -sL https://example.com/your-config.fish > ~/.config/fish/config.fish
+    curl -sL https://github.com/devygh/fishtmux/raw/refs/heads/main/config.fish > ~/.config/fish/config.fish
     source ~/.config/fish/config.fish
     echo "Конфиг обновлён!"
 end
